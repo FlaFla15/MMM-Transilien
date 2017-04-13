@@ -29,8 +29,14 @@ module.exports = NodeHelper.create({
 
 
         // calling this API
-        unirest.get(url)
-            .end(function(r) {
+        var request = unirest.get(url);
+        request.auth({
+            user: 'tnhtn613',
+            pass: '4i2xsTN7',
+            sendImmediately: true
+        });
+        
+        request.end(function(r) {
                 if (r.error) {
                     console.log(self.name + " : " + r.error);
                     retry = true;
@@ -68,7 +74,7 @@ module.exports = NodeHelper.create({
             this.transports.push({
                 name: nextTrain.miss,
                 date: nextTrain.date,
-                state: nextTrain.etat
+                state: nextTrain.date.mode
             });
         }
         this.loaded = true;
