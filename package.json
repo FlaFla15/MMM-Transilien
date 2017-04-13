@@ -1,0 +1,30 @@
+{
+  "name": "MMM-Transilien",
+  "version": "1.0.0",
+  "description": "Local transport in Paris (France) module for MagicMirror",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flafla15/MMM-Transilien"
+  },
+  "keywords": [
+    "magic mirror",
+    "smart mirror",
+    "localtransport",
+    "module",
+    "Transilien",
+    "paris",
+    "bus",
+    "train"
+  ],
+  "author": "FlaFla15",
+  "contributors": "https://github.com/flafla15/MMM-Transilien/graphs/contributors",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/flafla15/MMM-Transilien/issues"
+  },
+  "homepage": "https://github.com/flafla15/MMM-Transilien#readme",
+  "dependencies": {
+    "unirest": "latest",
+    "node-forge": "latest"
+    }
+}
