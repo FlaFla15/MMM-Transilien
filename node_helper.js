@@ -74,7 +74,8 @@ module.exports = NodeHelper.create({
             this.transports.push({
                 name: nextTrain.miss,
                 date: nextTrain.date,
-                state: nextTrain.date.mode
+                mode: nextTrain.date.mode,
+                state: nextTrain.etat
             });
         }
         this.loaded = true;

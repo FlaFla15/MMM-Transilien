@@ -73,9 +73,14 @@ Module.register("MMM-Transilien", {
             row.appendChild(transportNameCell);
 
             var transportTimeCell = document.createElement("td");
-            transportTimeCell.innerHTML = transports.time + " ("+transports.state+")";
+            transportTimeCell.innerHTML = transports.time + " ("+transports.mode+")";
             transportTimeCell.className = "align-right bright";
             row.appendChild(transportTimeCell);
+
+            var transportstateCell = document.createElement("td");
+            transportstateCell.innerHTML = transports.state;
+            transportstateCell.className = "align-right bright";
+            row.appendChild(transportstateCell);
 
             table.appendChild(row);
         }
