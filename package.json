@@ -25,6 +25,7 @@
   "homepage": "https://github.com/flafla15/MMM-Transilien#readme",
   "dependencies": {
     "unirest": "latest",
-    "node-forge": "latest"
+    "node-forge": "latest",
+    "xml2js ":"latest"
     }
 }

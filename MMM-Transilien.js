@@ -67,8 +67,13 @@ Module.register("MMM-Transilien", {
 
             var row = document.createElement("tr");
 
+            var transportNameCell = document.createElement("td");
+            transportNameCell.innerHTML = transports.name;
+            transportNameCell.className = "align-right bright";
+            row.appendChild(transportNameCell);
+
             var transportTimeCell = document.createElement("td");
-            transportTimeCell.innerHTML = transports.time;
+            transportTimeCell.innerHTML = transports.time + " ("+transports.state+")";
             transportTimeCell.className = "align-right bright";
             row.appendChild(transportTimeCell);
 
@@ -81,7 +86,7 @@ Module.register("MMM-Transilien", {
     // using the results retrieved for the API call
     socketNotificationReceived: function(notification, payload) {
         Log.info("Notif:" + notification);
-        if (notification === "TRANSPORTS") {
+        if (notification === "TRAINS") {
             if (this.config.debugging) {
                 Log.info("Transports arrived");
                 Log.info(payload.lineInfo);

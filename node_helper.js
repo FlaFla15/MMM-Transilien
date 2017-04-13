@@ -7,6 +7,7 @@
  * MIT Licensed.
  */
 const NodeHelper = require("node_helper");
+const xml2js  = require("xml2js ");
 const forge = require('node-forge');
 const unirest = require('unirest');
 
@@ -17,8 +18,6 @@ module.exports = NodeHelper.create({
         this.started = false;
         console.log("MMM-Transilien- NodeHelper started");
     },
-
-
 
     /* updateTimetable(transports)
      * Calls processTransports on succesfull response.
@@ -45,31 +44,7 @@ module.exports = NodeHelper.create({
                 }
             });
     },
-    // Help to retrieve a type which can be directly displayed
-    getSanitizedName: function(type) {
-        var t = "";
-        switch (type) {
-            case "bus":
-                t = "Bus";
-                break;
-            case "rers":
-                t = "RER";
-                break;
-            case "tramways":
-                t = "Tramway";
-                break;
-            case "noctiliens":
-                t = "Noctilien";
-                break;
-            case "metros":
-                t = "Metro";
-                break;
-            default:
-                t = "";
-        }
-
-        return t;
-    },
+ 
 
     /* processTransports(data)
      * Uses the received data to set the various values.
@@ -78,18 +53,26 @@ module.exports = NodeHelper.create({
 
         this.transports = [];
 
-        this.lineInfo = this.getSanitizedName(data.response.informations.type) + " " + data.response.informations.line + " (vers " + data.response.informations.destination.name + ")";
-        for (var i = 0, count = data.response.schedules.length; i < count; i++) {
+        // we convert it to json to be easier to parse
+        var responseInJson = null;
+        xml2js.parseString(data.response, function (err, result) {
+                    responseInJson = result;
+                });
 
-            var nextTransport = data.response.schedules[i];
+        this.lineInfo = "Train en gare de XXX"; // je me demande s'il faut pas le mettre dans la configuration ce nom. sinon il faut refaire un appel à l'api pour avoir le "libelle SMS gare"
+        
+        for (var i = 0, count = responseInJson.trains.length; i < count; i++) {
+
+            var nextTrain = data.response.trains[i];
 
             this.transports.push({
-                name: nextTransport.destination,
-                time: nextTransport.message
+                name: nextTrain.miss,
+                date: nextTrain.date,
+                state: nextTrain.etat
             });
         }
         this.loaded = true;
-        this.sendSocketNotification("TRANSPORTS", {
+        this.sendSocketNotification("TRAINS", {
             transports: this.transports,
             lineInfo: this.lineInfo
         });
