@@ -1,7 +1,7 @@
 # MMM-Transilien
-Local transport in Paris module for MagicMirror², a projet created by Michael Teeuw (https://github.com/MichMich/MagicMirror)
+Local transport in Ile de France Region module for MagicMirror², a projet created by Michael Teeuw (https://github.com/MichMich/MagicMirror)
 This module is working thanks to *** TO BE DONE ---- 
-It gives in real time next train (transilien) of the station of your choice
+It gives in real time next train (transilien) of the station of your choice using SNCF API "temps réel transilien"
 
 
 # SNCF OpenData 
