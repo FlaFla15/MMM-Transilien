@@ -39,7 +39,7 @@ Module.register("MMM-Transilien", {
     getDom: function() {
         var wrapper = document.createElement("div");
 
-        if (this.config.apiURL === "http://api.transilien.com/gare/87382432/depart") {
+        if (this.config.apiURL === "") {
             wrapper.innerHTML = "Please set the correct API URL in the config of: " + this.name + ".";
             wrapper.className = "dimmed light small Transilientransport red";
             return wrapper;
