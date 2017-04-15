@@ -14,16 +14,11 @@ Module.register("MMM-Transilien", {
     // Define module defaults
     defaults: {
         useRealtime: true,
-        updateInterval: 1 * 30 * 1000, // Update 30 secs
+        updateInterval: 1 * 60 * 1000, // Update 30 secs
         animationSpeed: 2000,
         debugging: true,
         retryDelay: 1 * 10 * 1000,
         initialLoadDelay: 0, // start delay seconds.
-    },
-
-    // Define required scripts.
-    getStyles: function() {
-        return [this.file("css/MMM-Transilien.css")];
     },
 
     // Define start sequence.
@@ -67,22 +62,17 @@ Module.register("MMM-Transilien", {
             var content = ""
             if(transports.state !== undefined )
             {
-                 content = "<span style='color:red'>" + transports.state +"</span> &nbsp;&nsbp;" +transports.name;
+                content = "<span style='color:red'>" + transports.state +"</span> &nbsp;&nsbp;" +transports.name;
             }
             else
             {
-                    content = transports.name;
+                content = transports.name;
             }
 
-            content = content + "&nbsp;&nbsp;&nbsp;&nbsp;" +transports.date;
-           transportNameCell.innerHTML = content;
+            content = content + "&nbsp;&nbsp;&nbsp;&nbsp;" + transports.date;
+            transportNameCell.innerHTML = content;
             transportNameCell.className = "align-right bright";
             row.appendChild(transportNameCell);
-
-            // var transportTimeCell = document.createElement("td");
-            // transportTimeCell.innerHTML = // + " ("+transports.mode+")";
-            // transportTimeCell.className = "align-right bright";
-            // row.appendChild(transportTimeCell);
 
             table.appendChild(row);
         }
@@ -95,7 +85,7 @@ Module.register("MMM-Transilien", {
         Log.info("Notif:" + notification);
         if (notification === "TRAINS") {
             if (this.config.debugging) {
-                Log.info("Transports arrived");
+                Log.info("Trains received");
                 Log.info(payload.lineInfo);
                 Log.info(payload.transports);
             }
