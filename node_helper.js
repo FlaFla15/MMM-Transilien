@@ -1,15 +1,15 @@
 /* Timetable for Paris local transport Module */
 /* Magic Mirror
- * Module: MMM-Transilien
+ * Module: MMM-Ratp
  *
  * By Louis-Guillaume MORAND
  * based on a script from Benjamin Angst http://www.beny.ch and Georg Peters (https://lane6.de)
  * MIT Licensed.
  */
 const NodeHelper = require("node_helper");
-const xml2js  = require("xml2js ");
 const forge = require('node-forge');
 const unirest = require('unirest');
+const xml2js = require('xml2js');
 
 module.exports = NodeHelper.create({
 
@@ -23,7 +23,8 @@ module.exports = NodeHelper.create({
      * Calls processTransports on succesfull response.
      */
     updateTimetable: function() {
-        var url = this.config.apiURL;
+        var url = "http://api.transilien.com/gare/"+ this.config.departUIC + "/depart/"+ this.config.arriveeUIC;
+        console.log(url);
         var self = this;
         var retry = false;
 
@@ -35,7 +36,8 @@ module.exports = NodeHelper.create({
             pass: '4i2xsTN7',
             sendImmediately: true
         });
-        
+        // from the documentation of the api, it'll will mandatory in next version of the api
+        request.headers({'Accept': 'application/vnd.sncf.transilien.od.depart+xml;vers=1.0'});
         request.end(function(r) {
                 if (r.error) {
                     console.log(self.name + " : " + r.error);
@@ -50,7 +52,6 @@ module.exports = NodeHelper.create({
                 }
             });
     },
- 
 
     /* processTransports(data)
      * Uses the received data to set the various values.
@@ -59,25 +60,34 @@ module.exports = NodeHelper.create({
 
         this.transports = [];
 
+        // console.log("-------------------------- XML RECEIVED-----------------------------------------\r\n");
+        // console.log(data);
+        
+        // console.log(data.response);
         // we convert it to json to be easier to parse
         var responseInJson = null;
-        xml2js.parseString(data.response, function (err, result) {
-                    responseInJson = result;
-                });
+        xml2js.parseString(data, { ignoreAttrs : true }, function (err, result) {
+                            responseInJson = result;
+        });
 
-        this.lineInfo = "Train en gare de XXX"; // je me demande s'il faut pas le mettre dans la configuration ce nom. sinon il faut refaire un appel à l'api pour avoir le "libelle SMS gare"
-        
-        for (var i = 0, count = responseInJson.trains.length; i < count; i++) {
+         console.log("---------------------------- XML TRANSFORMED TO JSON---------------------------------------\r\n");
+         console.log(responseInJson);
 
-            var nextTrain = data.response.trains[i];
+        this.lineInfo = "Prochains trains en gare de " + this.config.depart + " vers " + this.config.arrivee;
+        for (var i = 0, count = responseInJson.passages.train.length; i < 5 /*count*/; i++) {
+
+            var nextTrain = responseInJson.passages.train[i];
+
+            var _date = '' + nextTrain.date;
 
             this.transports.push({
                 name: nextTrain.miss,
-                date: nextTrain.date,
+                date: _date.substring(_date.lastIndexOf(" ")+1),
                 mode: nextTrain.date.mode,
                 state: nextTrain.etat
             });
         }
+
         this.loaded = true;
         this.sendSocketNotification("TRAINS", {
             transports: this.transports,

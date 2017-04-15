@@ -1,8 +1,8 @@
-/* Realtime Timetable for Transilien Ile De France local transport Module */
+/* Timetable for Paris local transport Module */
 /* Magic Mirror
- * Module: MMM-Transilien
+ * Module: MMM-Ratp
  *
- * By Louis-Guillaume MORAND and FlaFla15
+ * By Louis-Guillaume MORAND
  * based on a script from Benjamin Angst http://www.beny.ch and Georg Peters (https://lane6.de)
  * MIT Licensed.
  */
@@ -39,14 +39,8 @@ Module.register("MMM-Transilien", {
     getDom: function() {
         var wrapper = document.createElement("div");
 
-        if (this.config.apiURL === "") {
-            wrapper.innerHTML = "Please set the correct API URL in the config of: " + this.name + ".";
-            wrapper.className = "dimmed light small Transilientransport red";
-            return wrapper;
-        }
-
         if (!this.loaded) {
-            wrapper.innerHTML = "Loading connections ...";
+            wrapper.innerHTML = "Loading next trains...";
             wrapper.className = "dimmed light small";
             return wrapper;
         }
@@ -58,6 +52,8 @@ Module.register("MMM-Transilien", {
         var rowtitle = document.createElement("th");
         var title = document.createElement("td");
         title.innerHTML = this.lineInfo;
+        title.colSpan=2;
+        title.className = "align-right"
         rowtitle.appendChild(title);
         table.appendChild(rowtitle);
 
@@ -68,19 +64,25 @@ Module.register("MMM-Transilien", {
             var row = document.createElement("tr");
 
             var transportNameCell = document.createElement("td");
-            transportNameCell.innerHTML = transports.name;
+            var content = ""
+            if(transports.state !== undefined )
+            {
+                 content = "<span style='color:red'>" + transports.state +"</span> &nbsp;&nsbp;" +transports.name;
+            }
+            else
+            {
+                    content = transports.name;
+            }
+
+            content = content + "&nbsp;&nbsp;&nbsp;&nbsp;" +transports.date;
+           transportNameCell.innerHTML = content;
             transportNameCell.className = "align-right bright";
             row.appendChild(transportNameCell);
 
-            var transportTimeCell = document.createElement("td");
-            transportTimeCell.innerHTML = transports.time + " ("+transports.mode+")";
-            transportTimeCell.className = "align-right bright";
-            row.appendChild(transportTimeCell);
-
-            var transportstateCell = document.createElement("td");
-            transportstateCell.innerHTML = transports.state;
-            transportstateCell.className = "align-right bright";
-            row.appendChild(transportstateCell);
+            // var transportTimeCell = document.createElement("td");
+            // transportTimeCell.innerHTML = // + " ("+transports.mode+")";
+            // transportTimeCell.className = "align-right bright";
+            // row.appendChild(transportTimeCell);
 
             table.appendChild(row);
         }
