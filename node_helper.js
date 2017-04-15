@@ -70,22 +70,32 @@ module.exports = NodeHelper.create({
                             responseInJson = result;
         });
 
-         console.log("---------------------------- XML TRANSFORMED TO JSON---------------------------------------\r\n");
-         console.log(responseInJson);
+        //  console.log("---------------------------- XML TRANSFORMED TO JSON---------------------------------------\r\n");
+        //  console.log(responseInJson);
 
         this.lineInfo = "Prochains trains en gare de " + this.config.depart + " vers " + this.config.arrivee;
-        for (var i = 0, count = responseInJson.passages.train.length; i < 5 /*count*/; i++) {
+
+        var count = 5;
+        if(responseInJson.passages.train.length < count)
+        {
+            count = responseInJson.passages.train.length;
+        }
+
+        for (var i = 0; i < count; i++) {
 
             var nextTrain = responseInJson.passages.train[i];
 
-            var _date = '' + nextTrain.date;
+            if(nextTrain !== undefined)
+            {
+                var _date = '' + nextTrain.date;
 
-            this.transports.push({
-                name: nextTrain.miss,
-                date: _date.substring(_date.lastIndexOf(" ")+1),
-                mode: nextTrain.date.mode,
-                state: nextTrain.etat
-            });
+                this.transports.push({
+                    name: nextTrain.miss,
+                    date: _date.substring(_date.lastIndexOf(" ")+1),
+                    mode: nextTrain.date.mode,
+                    state: nextTrain.etat
+                });
+            }
         }
 
         this.loaded = true;
