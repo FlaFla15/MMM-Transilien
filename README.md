@@ -1,6 +1,6 @@
 # MMM-Transilien
 
-Local transport in Ile de France Region module for MagicMirror², a projet created by [Michael Teeuw](https://github.com/MichMich/MagicMirror)
+Local transport in FRANCE, Ile de France Region, module for MagicMirror² a projet created by [Michael Teeuw](https://github.com/MichMich/MagicMirror)
 
 This module is working thanks to lgmorand and flafla15
 It gives in real time next train (transilien) of the station of your choice using SNCF API "temps réel transilien"
@@ -11,7 +11,7 @@ A law was voted to force public companies to open some of their data to the publ
 More info about the [api](https://ressources.data.sncf.com/explore/dataset/api-temps-reel-transilien/)
 
 **VERY IMPORTANT**
-They sucks at RATP and they force you to ask for a key to use the API. For that, you need to ask them a key by email (see link above), once you write a mail, you MAY receive a key after several days or weeks (because they really really suck...). It may change in the future but for now they clearly do that to prevent user to easily access to their API.
+They sucks at SNCF and they force you to ask for a key to use the API. For that, you need to ask them a key by email (see link above), once you write a mail, you MAY receive a key after several days or weeks (because they really really suck...). It may change in the future but for now they clearly do that to prevent user to easily access to their API.
 
 ## Installation
 
@@ -22,7 +22,8 @@ Clone the git in the /modules folder of Magic Mirror and run the "npm install" c
 
 1- You need to find your train station and find the **UIC** of the train station (*not the uic7 column, the UIC*). You can look [here](https://ressources.data.sncf.com/explore/dataset/sncf-gares-et-arrets-transilien-ile-de-france/table/?sort=libelle)
 
-2- Specify missing values in the configuration. You need the UIC of your train station and the UIC of the arrival station. *depart* and *arrivee* are the name displayed on the widget (in the title)
+2- Specify missing values in the configuration. You need the UIC of your train station and the UIC of the arrival station. *depart* and *arrivee* are the name displayed on the widget (in the title). 
+Your **config.js** file will look like this:
 
 ```javascript
 {
@@ -33,7 +34,7 @@ Clone the git in the /modules folder of Magic Mirror and run the "npm install" c
         departUIC:"87382200",
         arrivee:"St Lazare", // name of the destination
         arriveeUIC:"87384008",
-        login:"",
+        login:"", // You must add your API login and password
         password:""
     }
 },
